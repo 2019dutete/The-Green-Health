@@ -1,0 +1,2 @@
+The vietnamese herbs' data is in https://drive.google.com/drive/folders/1gQ37RNwSInbDBSGtvIFOxtUp9FbJkilh?usp=sharing.
+All .txt files are used in .ipynb file is in the Data folder.  
