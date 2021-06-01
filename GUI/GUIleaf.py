@@ -3,12 +3,12 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import threading
 import cv2 as cv
-from VideoStream import VideoStream
-from helper import *
+from utils.VideoStream import VideoStream
+from utils.helper import *
 from tkinter import filedialog as fd
 import imutils
 from tkinter import messagebox
-from keras.models import load_model
+#from keras.models import load_model
 
 class leafApp(tk.Tk):
 
@@ -34,7 +34,7 @@ class beginPage(tk.Frame):
         tk.Frame.__init__(self, master=parent)
         tk.Frame.configure(self, bg=CODE_WHITE)
 
-        render1 = ImageTk.PhotoImage(Image.open('LogoKhoa1.png'))
+        render1 = ImageTk.PhotoImage(Image.open('logo/LogoKhoa1.png'))
         img1 = tk.Label(self, image=render1, bg=CODE_WHITE)
         img1.image = render1
         img1.pack()
@@ -42,7 +42,7 @@ class beginPage(tk.Frame):
                  bg=CODE_WHITE,
                  font=FONT_REGULAR).pack(anchor=tk.CENTER, padx=15, pady=10)
 
-        render = ImageTk.PhotoImage(Image.open('leaf6.png'))
+        render = ImageTk.PhotoImage(Image.open('logo/leaf6.png'))
         img = tk.Label(self, image=render, bg=CODE_WHITE)
         img.image = render
         img.pack()
@@ -58,12 +58,6 @@ class beginPage(tk.Frame):
 
         buttonExit = ttk.Button(self, text="Exit",command=quit)
         buttonExit.pack(anchor=tk.CENTER, padx=10, pady=10)
-
-        info = tk.Label(self, text="Copyright (Leaf team) Nguyen Thanh Long, Nguyen Dang Hoang",
-                        bg=CODE_WHITE,
-                        font=FONT_SMALL)
-        info.pack(anchor=tk.CENTER, side='bottom', fill='both', padx=10, pady=10)
-
 class InforPage(tk.Frame):
     def __init__(self, parent):
         tk.Frame.__init__(self, master=parent)
@@ -74,9 +68,9 @@ class InforPage(tk.Frame):
         tk.Label(self, bg=CODE_WHITE, text="DOCTOR LEAF \n Ứng dụng nhận dạng \nvà phân loại cây thuốc Nam",
 				 font=FONT_LAGRE).pack(anchor= tk.CENTER, padx=10,pady=15)
         tk.Label(self, bg=CODE_WHITE, text="GVHD: Ths Hoàng Lê Uyên Thục", font=FONT_REGULAR).pack(padx=10, pady=15)
-        tk.Label(self, bg=CODE_WHITE, text="Sinh viên thực hiện:", font=FONT_REGULAR).pack(padx=10, pady=15)
-        tk.Label(self, bg=CODE_WHITE, text="Nguyễn Thành Long  15DT2", font=FONT_REGULAR).pack(padx=10, pady=15)
-        tk.Label(self, bg=CODE_WHITE, text="Nguyễn Đăng Hoàng 15DT1", font=FONT_REGULAR).pack(padx=10, pady=15)
+        # tk.Label(self, bg=CODE_WHITE, text="Sinh viên thực hiện:", font=FONT_REGULAR).pack(padx=10, pady=15)
+        # tk.Label(self, bg=CODE_WHITE, text="Nguyễn Thành Long  15DT2", font=FONT_REGULAR).pack(padx=10, pady=15)
+        # tk.Label(self, bg=CODE_WHITE, text="Nguyễn Đăng Hoàng 15DT1", font=FONT_REGULAR).pack(padx=10, pady=15)
         tk.Label(self, bg=CODE_WHITE, text="Cảm ơn đã xem", font=FONT_REGULAR).pack(side='bottom', padx=10, pady=15)
         button = ttk.Button(self,
 							text="Back to home",
@@ -130,9 +124,9 @@ class classifyLeaf(tk.Frame):
         self.info = None
         self.info1 = None
 
-        self.net = cv.dnn.readNetFromDarknet("yolov3-tiny-leaf.cfg", "yolov3-tiny-leaf_8000.weights")
+        self.net = cv.dnn.readNetFromDarknet("model/yolov3-tiny-leaf.cfg", "model/yolov3-tiny-leaf_8000.weights")
         self.classes = []
-        with open("yolo.names", "r") as f:
+        with open("model/yolo.names", "r") as f:
             self.classes = [line.strip() for line in f.readlines()]
         layer_names = self.net.getLayerNames()
         self.output_layers = [layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
@@ -284,12 +278,13 @@ class classifyLeaf(tk.Frame):
         # self.vs.start()
         self.thread = threading.Thread(target=self.videoLoop2, args=()).start()
         return
-
+    """
     def loadModel(self, pathfile):
         print('[INFO]Loading Model...')
         model = load_model(pathfile)
         print('[INFO]Loaded Model')
         return model
+    """
     def putText(self, id = -1, conf= 0):
         try:
             confident = 'Độ chính xác: {0:.2f}%'.format(conf*100)
