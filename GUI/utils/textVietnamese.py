@@ -18,5 +18,5 @@ def changeIm(path = 'Image'):
         img = imutils.resize(img, width= 200)
         cv.imwrite('Image1/' + name + '.jpg', img)
         print(name)
-
-changeIm()
+if __name__ == "__main__":
+    changeIm()
